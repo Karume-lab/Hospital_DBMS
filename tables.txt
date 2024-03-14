@@ -1,0 +1,55 @@
+PATIENT:
+patient ID (Primary Key)
+name VARCHAR
+
+ADMIT:
+admit ID (Primary Key)
+patient ID (Foreign Key)
+physician ID (Foreign Key)
+ward ID (Foreign Key) OPTIONAL FIELD
+discharge date OPTIONAL FIELD
+admission date
+isActive
+
+INSURANCE:
+insurance ID (Primary Key)
+isActive
+type VARCHAR
+patient ID (Foreign Key)
+insurance number VARCHAR
+provider VARCHAR
+
+PHYSICIAN:
+physician ID (Primary Key)
+name
+specialty VARCHAR
+
+MEDICAL TEST:
+medical test ID (Primary Key)
+physician ID (Foreign Key)
+name
+date tested
+cost
+results
+name
+
+WARD:
+ward ID (Primary Key)
+physician ID
+name
+type VARCHAR
+capacity
+isAvailable
+
+TREATMENT DETAIL:
+treatment ID (Primary Key)
+patient ID (Foreign Key)
+physician ID (Foreign Key)
+results
+
+INCHARGE DETAILS:
+incharge ID (Primary Key)
+physician ID (Foreign Key)
+ward ID (Foreign Key)
+date removed
+isCurrent
