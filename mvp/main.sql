@@ -30,11 +30,13 @@ CREATE TABLE Insurance (
 CREATE TABLE MedicalTest (
     medicalTestID INT PRIMARY KEY AUTOINCREMENT,
     physicianID INT,
+    patientID INT,
     name VARCHAR(50),
     dateTested DATE,
     cost DECIMAL(10, 2),
     results TEXT,
     FOREIGN KEY (physicianID) REFERENCES Physician(physicianID)
+    FOREIGN KEY (patientID) REFERENCES Patient(patientID)
 );
 -- Creates the "Ward" table with columns for ward details
 -- It includes a foreign key reference to the "Physician" table
@@ -190,12 +192,14 @@ VALUES (
 -- Inserting values into the "MedicalTest" table
 INSERT INTO MedicalTest (
         physicianID,
+        patientID,
         name,
         dateTested,
         cost,
         results
     )
 VALUES (
+        1,
         1,
         'Blood Test',
         '2024-01-01',
@@ -204,12 +208,14 @@ VALUES (
     ),
     (
         2,
+        2,
         'X-Ray',
         '2024-01-02',
         150.00,
         'Fracture detected'
     ),
     (
+        3,
         3,
         'Ultrasound',
         '2024-01-03',
@@ -218,12 +224,14 @@ VALUES (
     ),
     (
         4,
+        4,
         'Eye Exam',
         '2024-01-04',
         80.00,
         '20/20 vision'
     ),
     (
+        5,
         5,
         'Skin Biopsy',
         '2024-01-05',
@@ -232,12 +240,14 @@ VALUES (
     ),
     (
         6,
+        6,
         'MRI Scan',
         '2024-01-06',
         300.00,
         'No abnormalities'
     ),
     (
+        7,
         7,
         'Colonoscopy',
         '2024-01-07',
@@ -246,6 +256,7 @@ VALUES (
     ),
     (
         8,
+        8,
         'Prenatal Screening',
         '2024-01-08',
         180.00,
@@ -253,12 +264,14 @@ VALUES (
     ),
     (
         9,
+        9,
         'Psychological Evaluation',
         '2024-01-09',
         220.00,
         'No significant issues'
     ),
     (
+        10,
         10,
         'Urinalysis',
         '2024-01-10',
