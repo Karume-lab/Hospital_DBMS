@@ -1,58 +1,67 @@
+-- Active: 1710873363456@@127.0.0.1@3306
 -- Creates a new database named "hospital"
 CREATE DATABASE hospital;
+
 -- Switches to using the "hospital" database
 USE hospital;
+
 -- Creates the "Patient" table with columns "patientID" and "name"
 -- "patientID" is the primary key of the table, and "name" is a VARCHAR column with a maximum length of 50 characters
 CREATE TABLE Patient (
-    patientID INT PRIMARY KEY AUTOINCREMENT,
+    patientID INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50)
 );
+
 -- Creates the "Physician" table with columns for physician details
 CREATE TABLE Physician (
-    physicianID INT PRIMARY KEY AUTOINCREMENT,
+    physicianID INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50),
     specialty VARCHAR(50)
 );
+
 -- Creates the "Insurance" table with columns for insurance details
 -- It includes a foreign key reference to the "Patient" table
 CREATE TABLE Insurance (
-    insuranceID INT PRIMARY KEY AUTOINCREMENT,
+    insuranceID INT PRIMARY KEY AUTO_INCREMENT,
     isActive BOOLEAN,
     type VARCHAR(50),
     patientID INT,
     insuranceNumber VARCHAR(50),
     provider VARCHAR(50),
-    FOREIGN KEY (patientID) REFERENCES Patient(patientID)
+    FOREIGN KEY (patientID) REFERENCES Patient (patientID)
 );
+
 -- Creates the "MedicalTest" table with columns for medical test details
 -- It includes a foreign key reference to the "Physician" table
 CREATE TABLE MedicalTest (
-    medicalTestID INT PRIMARY KEY AUTOINCREMENT,
+    medicalTestID INT PRIMARY KEY AUTO_INCREMENT,
     physicianID INT,
     patientID INT,
     name VARCHAR(50),
     dateTested DATE,
     cost DECIMAL(10, 2),
     results TEXT,
-    FOREIGN KEY (physicianID) REFERENCES Physician(physicianID)
-    FOREIGN KEY (patientID) REFERENCES Patient(patientID)
+    FOREIGN KEY (physicianID) REFERENCES Physician (physicianID),
+    FOREIGN KEY (patientID) REFERENCES Patient (patientID)
 );
+
 -- Creates the "Ward" table with columns for ward details
 -- It includes a foreign key reference to the "Physician" table
 CREATE TABLE Ward (
-    wardID INT PRIMARY KEY AUTOINCREMENT,
+    wardID INT PRIMARY KEY AUTO_INCREMENT,
     physicianID INT,
     name VARCHAR(50),
     type VARCHAR(50),
     capacity INT,
     isAvailable BOOLEAN,
-    FOREIGN KEY (physicianID) REFERENCES Physician(physicianID)
+    FOREIGN KEY (physicianID) REFERENCES Physician (physicianID)
 );
+
+
 -- Creates the "Admit" table with columns for admission details
 -- It includes foreign key references to the "Patient," "Physician," and "Ward" tables
 CREATE TABLE Admit (
-    admitID INT PRIMARY KEY AUTOINCREMENT,
+    admitID INT PRIMARY KEY AUTO_INCREMENT,
     patientID INT,
     physicianID INT,
     wardID INT,
@@ -63,30 +72,35 @@ CREATE TABLE Admit (
     FOREIGN KEY (physicianID) REFERENCES Physician (physicianID),
     FOREIGN KEY (wardID) REFERENCES Ward (wardID)
 );
+
 -- Creates the "TreatmentDetail" table with columns for treatment details
 -- It includes foreign key references to the "Patient" and "Physician" tables
 CREATE TABLE TreatmentDetail (
-    treatmentID INT PRIMARY KEY AUTOINCREMENT,
+    treatmentID INT PRIMARY KEY AUTO_INCREMENT,
     patientID INT,
     physicianID INT,
     results TEXT,
-    FOREIGN KEY (patientID) REFERENCES Patient(patientID),
-    FOREIGN KEY (physicianID) REFERENCES Physician(physicianID)
+    FOREIGN KEY (patientID) REFERENCES Patient (patientID),
+    FOREIGN KEY (physicianID) REFERENCES Physician (physicianID)
 );
+
 -- Creates the "InchargeDetails" table with columns for in-charge details
 -- It includes foreign key references to the "Physician" and "Ward" tables
 CREATE TABLE InchargeDetails (
-    inchargeID INT PRIMARY KEY AUTOINCREMENT,
+    inchargeID INT PRIMARY KEY AUTO_INCREMENT,
     physicianID INT,
     wardID INT,
     dateRemoved DATE,
     isCurrent BOOLEAN,
-    FOREIGN KEY (physicianID) REFERENCES Physician(physicianID),
-    FOREIGN KEY (wardID) REFERENCES Ward(wardID)
+    FOREIGN KEY (physicianID) REFERENCES Physician (physicianID),
+    FOREIGN KEY (wardID) REFERENCES Ward (wardID)
 );
+
 -- Inserting values into the "Patient" table
-INSERT INTO Patient (name)
-VALUES ('John Doe'),
+INSERT INTO
+    Patient (name)
+VALUES
+    ('John Doe'),
     ('Jane Smith'),
     ('Michael Johnson'),
     ('Emily Davis'),
@@ -96,30 +110,48 @@ VALUES ('John Doe'),
     ('Sophia Taylor'),
     ('Alexander Miller'),
     ('Ava Anderson');
+
 -- Inserting values into the "Physician" table
-INSERT INTO Physician (name, specialty)
-VALUES ('Dr. Robert Johnson', 'Cardiology'),
-    ('Dr. Emily Thompson', 'Orthopedics'),
+INSERT INTO
+    Physician (name, specialty)
+VALUES
+    ('Dr. Robert Johnson', 'Cardiology'),
+    (
+        'Dr. Emily Thompson',
+        'Orthopedics'
+    ),
     ('Dr. Sarah Davis', 'Pediatrics'),
-    ('Dr. Michael Roberts', 'Ophthalmology'),
-    ('Dr. Jennifer Wilson', 'Dermatology'),
+    (
+        'Dr. Michael Roberts',
+        'Ophthalmology'
+    ),
+    (
+        'Dr. Jennifer Wilson',
+        'Dermatology'
+    ),
     ('Dr. James Brown', 'Neurology'),
-    ('Dr. Elizabeth White', 'Gastroenterology'),
+    (
+        'Dr. Elizabeth White',
+        'Gastroenterology'
+    ),
     (
         'Dr. Benjamin Lee',
         'Obstetrics and Gynecology'
     ),
     ('Dr. Emma Martin', 'Psychiatry'),
     ('Dr. Samuel Clark', 'Urology');
+
 -- Inserting values into the "Insurance" table
-INSERT INTO Insurance (
+INSERT INTO
+    Insurance (
         isActive,
         type,
         patientID,
         insuranceNumber,
         provider
     )
-VALUES (
+VALUES
+    (
         true,
         'Health',
         1,
@@ -189,8 +221,10 @@ VALUES (
         'INS64208',
         'YZA Insurance'
     );
+
 -- Inserting values into the "MedicalTest" table
-INSERT INTO MedicalTest (
+INSERT INTO
+    MedicalTest (
         physicianID,
         patientID,
         name,
@@ -198,7 +232,8 @@ INSERT INTO MedicalTest (
         cost,
         results
     )
-VALUES (
+VALUES
+    (
         1,
         1,
         'Blood Test',
@@ -278,15 +313,24 @@ VALUES (
         90.00,
         'Normal'
     );
+
 -- Inserting values into the "Ward" table
-INSERT INTO Ward (
+INSERT INTO
+    Ward (
         physicianID,
         name,
         type,
         capacity,
         isAvailable
     )
-VALUES (1, 'Cardiology Ward', 'Cardiology', 20, true),
+VALUES
+    (
+        1,
+        'Cardiology Ward',
+        'Cardiology',
+        20,
+        true
+    ),
     (
         2,
         'Orthopedics Ward',
@@ -294,7 +338,13 @@ VALUES (1, 'Cardiology Ward', 'Cardiology', 20, true),
         15,
         true
     ),
-    (3, 'Pediatrics Ward', 'Pediatrics', 30, true),
+    (
+        3,
+        'Pediatrics Ward',
+        'Pediatrics',
+        30,
+        true
+    ),
     (
         4,
         'Ophthalmology Ward',
@@ -309,7 +359,13 @@ VALUES (1, 'Cardiology Ward', 'Cardiology', 20, true),
         25,
         true
     ),
-    (6, 'Neurology Ward', 'Neurology', 12, true),
+    (
+        6,
+        'Neurology Ward',
+        'Neurology',
+        12,
+        true
+    ),
     (
         7,
         'Gastroenterology Ward',
@@ -333,9 +389,17 @@ VALUES (1, 'Cardiology Ward', 'Cardiology', 20, true),
         15,
         true
     ),
-    (10, ' Urology Ward ', ' Urology ', 10, true);
+    (
+        10,
+        ' Urology Ward ',
+        ' Urology ',
+        10,
+        true
+    );
+
 -- Inserting values into the "Admit" table
-INSERT INTO Admit (
+INSERT INTO
+    Admit (
         patientID,
         physicianID,
         wardID,
@@ -343,7 +407,8 @@ INSERT INTO Admit (
         admissionDate,
         isActive
     )
-VALUES (
+VALUES
+    (
         1,
         1,
         1,
@@ -423,31 +488,53 @@ VALUES (
         '2024-01-10',
         false
     );
+
 -- Inserting values into the "TreatmentDetail" table
-INSERT INTO TreatmentDetail (patientID, physicianID, results)
-VALUES (
+INSERT INTO
+    TreatmentDetail (patientID, physicianID, results)
+VALUES
+    (
         1,
         1,
         ' Prescribed medication
         and rest '
     ),
     (2, 2, ' Surgery required '),
-    (3, 3, ' Physical therapy recommended '),
+    (
+        3,
+        3,
+        ' Physical therapy recommended '
+    ),
     (4, 4, ' Prescribed eye drops '),
-    (5, 5, ' Scheduled follow - up appointment '),
+    (
+        5,
+        5,
+        ' Scheduled follow - up appointment '
+    ),
     (6, 6, ' MRI results reviewed '),
-    (7, 7, ' Polyps removed during colonoscopy '),
+    (
+        7,
+        7,
+        ' Polyps removed during colonoscopy '
+    ),
     (8, 8, ' Routine prenatal care '),
-    (9, 9, ' Therapy sessions scheduled '),
+    (
+        9,
+        9,
+        ' Therapy sessions scheduled '
+    ),
     (10, 10, ' Prescribed antibiotics ');
+
 -- Inserting values into the "InchargeDetails" table
-INSERT INTO InchargeDetails (
+INSERT INTO
+    InchargeDetails (
         physicianID,
         wardID,
         dateRemoved,
         isCurrent
     )
-VALUES (1, 1, NULL, true),
+VALUES
+    (1, 1, NULL, true),
     (2, 2, NULL, true),
     (3, 3, NULL, true),
     (4, 4, NULL, true),
