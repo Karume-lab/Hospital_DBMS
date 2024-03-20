@@ -1,8 +1,8 @@
-PATIENT:
+Patient:
 patient ID (Primary Key)
 name VARCHAR
 
-ADMIT:
+Admit:
 admit ID (Primary Key)
 patient ID (Foreign Key)
 physician ID (Foreign Key)
@@ -11,7 +11,7 @@ discharge date OPTIONAL FIELD
 admission date
 isActive
 
-INSURANCE:
+Insurance:
 insurance ID (Primary Key)
 isActive
 type VARCHAR
@@ -19,21 +19,20 @@ patient ID (Foreign Key)
 insurance number VARCHAR
 provider VARCHAR
 
-PHYSICIAN:
+Physician:
 physician ID (Primary Key)
 name
 specialty VARCHAR
 
-MEDICAL TEST:
+MedicalTest:
 medical test ID (Primary Key)
 physician ID (Foreign Key)
 name
 date tested
 cost
 results
-name
 
-WARD:
+Ward:
 ward ID (Primary Key)
 physician ID
 name
@@ -41,13 +40,13 @@ type VARCHAR
 capacity
 isAvailable
 
-TREATMENT DETAIL:
+TreatmentDetail:
 treatment ID (Primary Key)
 patient ID (Foreign Key)
 physician ID (Foreign Key)
 results
 
-INCHARGE DETAILS:
+InchargeDetail:
 incharge ID (Primary Key)
 physician ID (Foreign Key)
 ward ID (Foreign Key)
