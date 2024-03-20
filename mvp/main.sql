@@ -7,141 +7,143 @@ USE hospital;
 
 -- Creates the "Patient" table with columns "patientID" and "name"
 -- "patientID" is the primary key of the table, and "name" is a VARCHAR column with a maximum length of 50 characters
-CREATE TABLE Patient (
+CREATE TABLE IF NOT EXISTS Patient (
     patientID INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50)
+    firstName VARCHAR(50) NOT NULL,
+    lastName VARCHAR(50) NOT NULL
 );
 
 -- Creates the "Physician" table with columns for physician details
-CREATE TABLE Physician (
+CREATE TABLE IF NOT EXISTS Physician (
     physicianID INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50),
-    specialty VARCHAR(50)
+    firstName VARCHAR(50) NOT NULL,
+    lastName VARCHAR(50) NOT NULL,
+    specialty VARCHAR(50) NOT NULL
 );
 
 -- Creates the "Insurance" table with columns for insurance details
 -- It includes a foreign key reference to the "Patient" table
-CREATE TABLE Insurance (
+CREATE TABLE IF NOT EXISTS Insurance (
     insuranceID INT PRIMARY KEY AUTO_INCREMENT,
-    isActive BOOLEAN,
-    type VARCHAR(50),
-    patientID INT,
-    insuranceNumber VARCHAR(50),
-    provider VARCHAR(50),
-    FOREIGN KEY (patientID) REFERENCES Patient (patientID)
+    isActive BOOLEAN DEFAULT False,
+    type VARCHAR(50) NOT NULL,
+    patientID INT NOT NULL,
+    insuranceNumber VARCHAR(50) NOT NULL,
+    provider VARCHAR(50) NOT NULL,
+    FOREIGN KEY (patientID) REFERENCES Patient (patientID) ON DELETE CASCADE
 );
 
 -- Creates the "MedicalTest" table with columns for medical test details
 -- It includes a foreign key reference to the "Physician" table
-CREATE TABLE MedicalTest (
+CREATE TABLE IF NOT EXISTS MedicalTest (
     medicalTestID INT PRIMARY KEY AUTO_INCREMENT,
-    physicianID INT,
-    patientID INT,
-    name VARCHAR(50),
+    physicianID INT NOT NULL,
+    patientID INT NOT NULL,
+    name VARCHAR(50) NOT NULL,
     dateTested DATE,
-    cost DECIMAL(10, 2),
+    cost DECIMAL(10, 2) DEFAULT 0,
     results TEXT,
-    FOREIGN KEY (physicianID) REFERENCES Physician (physicianID),
-    FOREIGN KEY (patientID) REFERENCES Patient (patientID)
+    FOREIGN KEY (physicianID) REFERENCES Physician (physicianID) ON DELETE CASCADE,
+    FOREIGN KEY (patientID) REFERENCES Patient (patientID) ON DELETE CASCADE
 );
 
 -- Creates the "Ward" table with columns for ward details
 -- It includes a foreign key reference to the "Physician" table
-CREATE TABLE Ward (
+CREATE TABLE IF NOT EXISTS Ward (
     wardID INT PRIMARY KEY AUTO_INCREMENT,
-    physicianID INT,
-    name VARCHAR(50),
-    type VARCHAR(50),
-    capacity INT,
-    isAvailable BOOLEAN,
-    FOREIGN KEY (physicianID) REFERENCES Physician (physicianID)
+    name VARCHAR(50) NOT NULL,
+    type VARCHAR(50) NOT NULL,
+    capacity INT NOT NULL,
+    isAvailable BOOLEAN
 );
-
 
 -- Creates the "Admit" table with columns for admission details
 -- It includes foreign key references to the "Patient," "Physician," and "Ward" tables
-CREATE TABLE Admit (
+CREATE TABLE IF NOT EXISTS Admit (
     admitID INT PRIMARY KEY AUTO_INCREMENT,
-    patientID INT,
-    physicianID INT,
-    wardID INT,
+    patientID INT NOT NULL,
+    physicianID INT NOT NULL,
+    wardID INT NOT NULL,
     dischargeDate DATE,
     admissionDate DATE,
     isActive BOOLEAN,
-    FOREIGN KEY (patientID) REFERENCES Patient (patientID),
-    FOREIGN KEY (physicianID) REFERENCES Physician (physicianID),
-    FOREIGN KEY (wardID) REFERENCES Ward (wardID)
+    FOREIGN KEY (patientID) REFERENCES Patient (patientID) ON DELETE CASCADE,
+    FOREIGN KEY (physicianID) REFERENCES Physician (physicianID) ON DELETE CASCADE,
+    FOREIGN KEY (wardID) REFERENCES Ward (wardID) ON DELETE CASCADE
 );
 
 -- Creates the "TreatmentDetail" table with columns for treatment details
 -- It includes foreign key references to the "Patient" and "Physician" tables
-CREATE TABLE TreatmentDetail (
+CREATE TABLE IF NOT EXISTS TreatmentDetail (
     treatmentID INT PRIMARY KEY AUTO_INCREMENT,
-    patientID INT,
-    physicianID INT,
-    results TEXT,
-    FOREIGN KEY (patientID) REFERENCES Patient (patientID),
-    FOREIGN KEY (physicianID) REFERENCES Physician (physicianID)
+    patientID INT NOT NULL,
+    physicianID INT NOT NULL,
+    results TEXT NOT NULL,
+    FOREIGN KEY (patientID) REFERENCES Patient (patientID) ON DELETE CASCADE,
+    FOREIGN KEY (physicianID) REFERENCES Physician (physicianID) ON DELETE CASCADE
 );
 
 -- Creates the "InchargeDetails" table with columns for in-charge details
 -- It includes foreign key references to the "Physician" and "Ward" tables
-CREATE TABLE InchargeDetails (
+CREATE TABLE IF NOT EXISTS InchargeDetails (
     inchargeID INT PRIMARY KEY AUTO_INCREMENT,
-    physicianID INT,
-    wardID INT,
+    physicianID INT NOT NULL,
+    wardID INT NOT NULL,
     dateRemoved DATE,
     isCurrent BOOLEAN,
-    FOREIGN KEY (physicianID) REFERENCES Physician (physicianID),
-    FOREIGN KEY (wardID) REFERENCES Ward (wardID)
+    FOREIGN KEY (physicianID) REFERENCES Physician (physicianID) ON DELETE CASCADE,
+    FOREIGN KEY (wardID) REFERENCES Ward (wardID) ON DELETE CASCADE
 );
 
 -- Inserting values into the "Patient" table
 INSERT INTO
-    Patient (name)
+    Patient (firstName, lastName)
 VALUES
-    ('John Doe'),
-    ('Jane Smith'),
-    ('Michael Johnson'),
-    ('Emily Davis'),
-    ('Daniel Wilson'),
-    ('Olivia Brown'),
-    ('William Jones'),
-    ('Sophia Taylor'),
-    ('Alexander Miller'),
-    ('Ava Anderson');
-
-
+    ('John', 'Doe'),
+    ('Jane', 'Smith'),
+    ('Michael', 'Johnson'),
+    ('Emily', 'Davis'),
+    ('Daniel', 'Wilson'),
+    ('Olivia', 'Brown'),
+    ('William', 'Jones'),
+    ('Sophia', 'Taylor'),
+    ('Alexander', 'Miller'),
+    ('Ava', 'Anderson');
 
 -- Inserting values into the "Physician" table
 INSERT INTO
-    Physician (name, specialty)
+    Physician (firstName, lastName, specialty)
 VALUES
-    ('Dr. Robert Johnson', 'Cardiology'),
+    ('Robert', 'Johnson', 'Cardiology'),
     (
-        'Dr. Emily Thompson',
+        'Emily',
+        'Thompson',
         'Orthopedics'
     ),
-    ('Dr. Sarah Davis', 'Pediatrics'),
+    ('Sarah', 'Davis', 'Pediatrics'),
     (
-        'Dr. Michael Roberts',
+        'Michael',
+        'Roberts',
         'Ophthalmology'
     ),
     (
-        'Dr. Jennifer Wilson',
+        'Jennifer',
+        'Wilson',
         'Dermatology'
     ),
-    ('Dr. James Brown', 'Neurology'),
+    ('James', 'Brown', 'Neurology'),
     (
-        'Dr. Elizabeth White',
+        'Elizabeth',
+        'White',
         'Gastroenterology'
     ),
     (
-        'Dr. Benjamin Lee',
-        'Obstetrics and Gynecology'
+        'Benjamin',
+        'Lee',
+        'Obstetrics'
     ),
-    ('Dr. Emma Martin', 'Psychiatry'),
-    ('Dr. Samuel Clark', 'Urology');
+    ('Emma', 'Martin', 'Psychiatry'),
+    ('Samuel', 'Clark', 'Urology');
 
 -- Inserting values into the "Insurance" table
 INSERT INTO
@@ -319,7 +321,6 @@ VALUES
 -- Inserting values into the "Ward" table
 INSERT INTO
     Ward (
-        physicianID,
         name,
         type,
         capacity,
@@ -327,74 +328,62 @@ INSERT INTO
     )
 VALUES
     (
-        1,
         'Cardiology Ward',
         'Cardiology',
         20,
         true
     ),
     (
-        2,
         'Orthopedics Ward',
         'Orthopedics',
         15,
         true
     ),
     (
-        3,
         'Pediatrics Ward',
         'Pediatrics',
         30,
         true
     ),
     (
-        4,
         'Ophthalmology Ward',
         'Ophthalmology',
         10,
         true
     ),
     (
-        5,
         'Dermatology Ward',
         'Dermatology',
         25,
         true
     ),
     (
-        6,
         'Neurology Ward',
         'Neurology',
         12,
         true
     ),
     (
-        7,
         'Gastroenterology Ward',
         'Gastroenterology',
         18,
         true
     ),
     (
-        8,
-        ' Obstetrics
-        and Gynecology Ward ',
-        ' Obstetrics
-        and Gynecology ',
+        'Gynecology Ward',
+        'Obstetrics',
         20,
         true
     ),
     (
-        9,
-        ' Psychiatry Ward ',
-        ' Psychiatry ',
+        'Psychiatry Ward',
+        'Psychiatry',
         15,
         true
     ),
     (
-        10,
-        ' Urology Ward ',
-        ' Urology ',
+        'Urology Ward',
+        'Urology',
         10,
         true
     );
@@ -545,4 +534,4 @@ VALUES
     (7, 7, NULL, true),
     (8, 8, NULL, true),
     (9, 9, NULL, true),
-    (10, 10, NULL, true);
+    (10, 10, NULL, true);   

@@ -1,6 +1,7 @@
 Patient:
 patientID (Primary Key)
-name
+firstName
+lastName
 
 Admit:
 admitID (Primary Key)
@@ -21,7 +22,8 @@ provider
 
 Physician:
 physicianID (Primary Key)
-name
+firstName
+lastName
 specialty
 
 MedicalTest:
@@ -35,7 +37,6 @@ results
 
 Ward:
 wardID (Primary Key)
-physicianID
 name
 type
 capacity
