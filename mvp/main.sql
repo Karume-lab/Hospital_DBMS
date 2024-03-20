@@ -111,6 +111,8 @@ VALUES
     ('Alexander Miller'),
     ('Ava Anderson');
 
+
+
 -- Inserting values into the "Physician" table
 INSERT INTO
     Physician (name, specialty)
